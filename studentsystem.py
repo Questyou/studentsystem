@@ -1,4 +1,5 @@
 import re
+import os
 # import sys
 # sys.path.append('D:\PyCharmObJect\studentsystem')
 
@@ -95,7 +96,39 @@ def insert ():
         print("学生录入完成！")
 
 def delete():
-    print('')
+    mark = True
+    while mark:
+        studentID = input("请输入要删除的学生ID")
+        if studentID is not "":
+            if os.path.exists(filename):
+                with open(filename, 'r') as rfile:
+                    student_old = rfile.readlines()
+            else:
+                student_old = [ ]
+            ifdel = False
+            if student_old:
+                with open(filename, 'w') as wfile:
+                    d = {}
+                    for list  in student_old:
+                        d = dict(eval(list))
+                        if d["id"] != studentID:
+                            wfile.write(str(d) + '\n')
+                        else:
+                            ifdel = True
+                    if ifdel:
+                        print("ID 为 %s 的学生信息已经删除。。。。" % studentID)
+                    else:
+                        print("没有占到学生ID为  %s 的学生信息" % studentID)
+            else:
+                print('无学生信息')
+                break
+            show()
+            inputMark = input("是否继续删除？   （y/n）:")
+            if inputMark == "y":
+                mark = True
+            else:
+                mark = False
+    # print('')
 
 def modify():
     print('')
@@ -107,7 +140,18 @@ def total():
     print('')
 
 def show():
-    print('')
+    student_new = [ ]
+    if os.path.exists(filename):
+        with    open(filename, 'r') as  rfile:
+            student_info =rfile.readlines()
+            print(student_info)
+        for list in student_info:
+            student_new.append(eval(list))
+        if student_new:
+            # show_student(student_new)
+            print('')
+    else:
+        print("暂未保存数据信息")
 
 
 
